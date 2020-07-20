@@ -19,8 +19,13 @@ from sklearn.metrics import classification_report
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
-
+    
 def load_data(database_filepath):
+   """
+    功能：从数据库下载数据
+    输入变量：数据库的路径
+    输出变量：这里解释输出变量是什么
+   """
     engine = create_engine("sqlite:///"+database_filepath)
     df = pd.read_sql_table(database_filepath, engine)
     X = df.message.values
@@ -29,6 +34,11 @@ def load_data(database_filepath):
     return X,Y,category_names
 
 def tokenize(text):
+   """
+    功能：将一段文字按空格切开
+    输入变量：一段字符串
+    输出变量：单个文字的数组
+   """
     text=re.sub(r"[^a-zA-Z0-9]", " ", text.lower())#normalize
     token=word_tokenize(text)#tokenize
     lemzer = WordNetLemmatizer()#lemmatizer
@@ -41,6 +51,11 @@ def tokenize(text):
 
 
 def build_model():
+   """
+    功能：建立模型管道
+    输入变量：无
+    输出变量：模型
+   """
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
@@ -54,6 +69,11 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+   """
+    功能：计算模型预测准确度，评估模型优劣
+    输入变量：模型，测试数据集，分类
+    输出变量：模型精确度
+   """
     Y_pred = model.predict(X_test)
     df_Y_pred=pd.DataFrame(Y_pred,columns=category_names)
     for col in category_names:

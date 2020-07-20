@@ -5,6 +5,11 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
+   """
+    功能：指定路径下读到csv数据
+    输入变量：csv数据集位置
+    输出变量：一个dataframe
+   """
     messages = pd.read_csv(messages_filepath, dtype=str)
     categories = pd.read_csv(categories_filepath,dtype=str)
     # merge datasets
@@ -13,6 +18,11 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+   """
+    功能：清洗数据
+    输入变量：dataframe
+    输出变量：去重，文字转数据后的数据集
+   """
     categories = df['categories'].str.split(';', expand=True)
     row = categories.head(1)
     category_colnames = list(map(lambda x: row[x][0][0:-2], [y for y in range(row.size)]))
