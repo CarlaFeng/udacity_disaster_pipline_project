@@ -11,7 +11,9 @@ categories.csv
 
 ## 文件夹说明
 data: 数据源disaster_categories.csv, disaster_message.csv 和处理数据的脚本process_data.py, 处理后的数据存放在disaster_data.db
+
 models: 用data/disaster_data.db作为数据源建立预测模型，得到的message类型预测模型村委classifier.pkl
+
 app：网络运用app, 包括前端html页面，和后端的数据计算
 
 ## 项目依赖包
