@@ -62,7 +62,7 @@ def create_fig():
     graph_two=[Pie(
           labels = labels,
           values = values)]
-    layout_two = Layout(title = 'Percentage of All Message Types')
+    layout_two = Layout(title = 'Percentage of message number by type')
 
     figures = [Figure(data=graph_one, layout=layout_one),
               Figure(data=graph_two, layout=layout_two)]
