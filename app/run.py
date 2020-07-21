@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+from plotly.graph_objs import Bar,Scatter,Layout,Figure,Pie
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
@@ -36,37 +36,51 @@ print("model download succeed")
 
 
 # index webpage displays cool visuals and receives user input text for model
+
+def create_fig():
+    """
+        方程作用：建立两个Graphes
+        输入：无
+        输出
+        list(dict):含有两个Graphes
+     """
+    #Graph 1
+    genre_names = df.columns[4:39].tolist()
+    genre_counts = df[genre_names].sum(axis=0)
+    graph_one=[Bar(
+      x=genre_names,
+      y=genre_counts)]
+
+    layout_one = Layout(title = 'Message distribution by types',
+                xaxis = dict(title = 'Message Types'),
+                yaxis = dict(title = 'Message Number'),
+                barmode='overlay',
+                showlegend=False)
+    #figure 2
+    labels=genre_names
+    values=genre_counts
+    graph_two=[Pie(
+          labels = labels,
+          values = values)]
+    layout_two = Layout(title = 'Percentage of All Message Types')
+
+    figures = [Figure(data=graph_one, layout=layout_one),
+              Figure(data=graph_two, layout=layout_two)]
+
+    return figures
+
+
+
 @app.route('/')
 @app.route('/index')
 def index():
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
-    graphs = [
-        {
-            'data': [
-                Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
-            ],
-
-            'layout': {
-                'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre"
-                }
-            }
-        }
-    ]
+    graphs = create_fig()
     
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
@@ -92,7 +106,6 @@ def go():
         query=query,
         classification_result=classification_results
     )
-
 
 def main():
     app.run(host='0.0.0.0', port=3001, debug=True)
