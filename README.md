@@ -16,6 +16,11 @@ models: 用data/disaster_data.db作为数据源建立预测模型，得到的mes
 
 app：网络运用app, 包括前端html页面，和后端的数据计算
 
+## 运行文件
+step1 在主目录下，运行python data/process_data.py可以处理数据并得到disater_data.db
+step2 在主目录下，运行python models/train_classifier.py可以构造模型，并得到分类模型classifier.pkl
+step3 在主目录下，运行python app/run.py 并打开http://view6914b2f4-3001.udacity-student-workspaces.com可以看到web app
+
 ## 项目依赖包
 alabaster==0.7.12
 alembic==0.8.10

@@ -1,4 +1,4 @@
-import json
+import json, os
 import plotly
 import pandas as pd
 
@@ -26,24 +26,22 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///data/disaster_data.db')
-df = pd.read_sql_table('data/disaster_data.db', engine)
+engine = create_engine("sqlite:///data/disaster_data.db")
+parent_path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+df = pd.read_sql_table(parent_path+r"/data/disaster_data.db", engine)
 print(df.head())
 
 # load model
-model = joblib.load("./models/classifier.pkl")
+model = joblib.load(parent_path+r"/models/classifier.pkl")
 print("model download succeed")
 
 
 # index webpage displays cool visuals and receives user input text for model
 
 def create_fig():
-    """
-        方程作用：建立两个Graphes
-        输入：无
-        输出
-        list(dict):含有两个Graphes
-     """
+    #方程作用：建立两个Graphes
+    #输入：无
+    #输出 list(dict):含有两个Graphes
     #Graph 1
     genre_names = df.columns[4:39].tolist()
     genre_counts = df[genre_names].sum(axis=0)
